@@ -28,7 +28,7 @@ import { CampusMapView } from './views/CampusMapView';
 import { StoreView } from './views/StoreView';
 import { ProgressView } from './views/ProgressView';
 
-import { Globe, UserCheck, Sparkles, MessageSquareHeart, Shield } from 'lucide-react';
+import { Globe, UserCheck, Sparkles, MessageSquareHeart, Shield, LogOut } from 'lucide-react';
 import { useLanguage } from './i18n/LanguageContext';
 
 export const App: React.FC = () => {
@@ -44,22 +44,38 @@ export const App: React.FC = () => {
   const [hydrationLiters, setHydrationLiters] = useState<number>(1.75);
   const [sleepHours, setSleepHours] = useState<number>(7.5);
 
-  // Authentication & Country State (Prompt: "at the start ask the user to enter their country and an userID & password")
+  // Authentication & Session State: Gate newly opened app with Sign In / Register / Forgot Password
   const [authSession, setAuthSession] = useState<UserAuthSession>(() => {
     try {
       const saved = localStorage.getItem('zyro_auth_session');
-      if (saved) return JSON.parse(saved);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed && parsed.isLoggedIn && parsed.userId) {
+          return parsed;
+        }
+      }
     } catch (e) {
       // ignore
     }
     return {
-      userId: 'Hunter_Balaji',
+      userId: '',
       countryCode: 'IN', // Default to India, can switch to any of 21+ global countries
-      isLoggedIn: true, // Prompt: at start ask user or allow modal switch
+      isLoggedIn: false, // Newly opened app asks user to sign in or create an account
     };
   });
 
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(() => {
+    try {
+      const saved = localStorage.getItem('zyro_auth_session');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        return !(parsed && parsed.isLoggedIn);
+      }
+    } catch (e) {
+      // ignore
+    }
+    return true; // Newly opened app: automatically prompt user to sign in or create account
+  });
   const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
 
   // Modals state
@@ -108,6 +124,21 @@ export const App: React.FC = () => {
     } catch (e) {
       // ignore
     }
+  };
+
+  const handleLogout = () => {
+    const clearedSession: UserAuthSession = {
+      userId: '',
+      countryCode: authSession.countryCode || 'IN',
+      isLoggedIn: false,
+    };
+    setAuthSession(clearedSession);
+    try {
+      localStorage.removeItem('zyro_auth_session');
+    } catch (e) {
+      // ignore
+    }
+    setIsAuthModalOpen(true);
   };
 
   // Quest Toggle handler
@@ -183,22 +214,35 @@ export const App: React.FC = () => {
 
           {/* Right Controls: Country Switcher + Streak + Language + Feedback + Profile */}
           <div className="flex items-center gap-2 sm:gap-3.5">
-            {/* Country & Account Switcher Button */}
-            <button
-              type="button"
-              onClick={() => setIsAuthModalOpen(true)}
-              className="flex items-center gap-1.5 bg-[#141b16] hover:bg-emerald-950/40 border border-emerald-500/30 hover:border-emerald-500 text-white px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer shadow-sm"
-              title="Switch Country / User Credentials"
-            >
-              <span className="text-sm">{currentCountry.flag}</span>
-              <span className="hidden sm:inline text-white font-mono text-[11px] font-bold">
-                {currentCountry.code} ({currentCountry.currencySymbol})
-              </span>
-              <span className="text-[10px] text-gray-400 font-normal">|</span>
-              <span className="text-[11px] text-emerald-400 font-bold truncate max-w-[80px]">
-                {authSession.userId}
-              </span>
-            </button>
+            {/* Country & Account Switcher + Sign Out */}
+            <div className="flex items-center gap-1.5">
+              <button
+                type="button"
+                onClick={() => setIsAuthModalOpen(true)}
+                className="flex items-center gap-1.5 bg-[#141b16] hover:bg-emerald-950/40 border border-emerald-500/30 hover:border-emerald-500 text-white px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer shadow-sm"
+                title={authSession.isLoggedIn ? "Account & Country Settings" : "Sign In / Register"}
+              >
+                <span className="text-sm">{currentCountry.flag}</span>
+                <span className="hidden sm:inline text-white font-mono text-[11px] font-bold">
+                  {currentCountry.code} ({currentCountry.currencySymbol})
+                </span>
+                <span className="text-[10px] text-gray-400 font-normal">|</span>
+                <span className="text-[11px] text-emerald-400 font-bold truncate max-w-[80px]">
+                  {authSession.userId || 'Sign In'}
+                </span>
+              </button>
+
+              {authSession.isLoggedIn && (
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="bg-[#141b16] hover:bg-rose-950/40 border border-white/10 hover:border-rose-500/40 text-gray-400 hover:text-rose-300 p-2 rounded-xl text-xs transition-colors cursor-pointer"
+                  title="Sign Out / Switch Account"
+                >
+                  <LogOut size={13} />
+                </button>
+              )}
+            </div>
 
             {/* Streak Badge */}
             <div
@@ -270,7 +314,7 @@ export const App: React.FC = () => {
         {activeTab === 'home' && (
           <HomeView
             userProfile={userProfile}
-            userName={authSession.userId}
+            userName={authSession.fullName || authSession.userId || 'Athlete'}
             quests={quests}
             onToggleQuest={handleToggleQuest}
             streakDays={streakDays}
@@ -365,13 +409,17 @@ export const App: React.FC = () => {
         onOpenAskAi={() => handleOpenZyroWithPrompt()}
       />
 
-      {/* Auth & Country Selection Gateway Modal (Prompt: "at the start ask user to enter country, UserID & password") */}
+      {/* Universal Athlete Gateway: Sign In / Create Account / Forgot Password */}
       <AuthCountryModal
-        isOpen={isAuthModalOpen}
+        isOpen={isAuthModalOpen || !authSession.isLoggedIn}
         currentAuth={authSession}
         onAuthenticate={handleSaveAuth}
-        canDismiss={true}
-        onClose={() => setIsAuthModalOpen(false)}
+        canDismiss={authSession.isLoggedIn}
+        onClose={() => {
+          if (authSession.isLoggedIn) {
+            setIsAuthModalOpen(false);
+          }
+        }}
       />
 
       {/* User Feedback & Community Patch Notes Modal */}

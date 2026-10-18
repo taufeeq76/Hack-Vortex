@@ -136,6 +136,8 @@ export interface StoreProduct {
 
 export interface UserAuthSession {
   userId: string;
+  email?: string;
+  fullName?: string;
   countryCode: string;
   isLoggedIn: boolean;
   loginTimestamp?: string;
