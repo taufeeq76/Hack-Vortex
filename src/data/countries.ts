@@ -1,0 +1,261 @@
+export interface CountryInfo {
+  code: string;
+  name: string;
+  currency: string;
+  currencySymbol: string;
+  exchangeRateFromUSD: number; // 1 USD = X local currency
+  flag: string;
+  localPaymentMethods: string[];
+  hasCashOnDelivery: boolean;
+  deliveryTimeDays: string;
+}
+
+export const COUNTRIES: CountryInfo[] = [
+  {
+    code: 'IN',
+    name: 'India',
+    currency: 'INR',
+    currencySymbol: '₹',
+    exchangeRateFromUSD: 86.5,
+    flag: '🇮🇳',
+    localPaymentMethods: ['UPI (GPay / PhonePe / Paytm)', 'NetBanking (SBI/HDFC/ICICI)', 'Credit/Debit Card', 'EMI', 'Cash on Delivery (COD)'],
+    hasCashOnDelivery: true,
+    deliveryTimeDays: '2-4 business days',
+  },
+  {
+    code: 'US',
+    name: 'United States',
+    currency: 'USD',
+    currencySymbol: '$',
+    exchangeRateFromUSD: 1.0,
+    flag: '🇺🇸',
+    localPaymentMethods: ['Apple Pay', 'Google Pay', 'Credit / Debit Card (Visa/Mastercard/Amex)', 'Klarna Pay in 4', 'PayPal', 'Cash on Delivery (COD)'],
+    hasCashOnDelivery: true,
+    deliveryTimeDays: '1-3 business days',
+  },
+  {
+    code: 'GB',
+    name: 'United Kingdom',
+    currency: 'GBP',
+    currencySymbol: '£',
+    exchangeRateFromUSD: 0.79,
+    flag: '🇬🇧',
+    localPaymentMethods: ['Apple Pay', 'Google Pay', 'UK Debit / Credit Card', 'Klarna', 'Revolut Pay', 'Cash on Delivery (COD)'],
+    hasCashOnDelivery: true,
+    deliveryTimeDays: '2-3 business days',
+  },
+  {
+    code: 'DE',
+    name: 'Germany',
+    currency: 'EUR',
+    currencySymbol: '€',
+    exchangeRateFromUSD: 0.93,
+    flag: '🇩🇪',
+    localPaymentMethods: ['Sofort / Klarna', 'Giropay', 'PayPal', 'SEPA Direct Debit', 'Cards', 'Cash on Delivery (COD)'],
+    hasCashOnDelivery: true,
+    deliveryTimeDays: '2-4 business days',
+  },
+  {
+    code: 'FR',
+    name: 'France',
+    currency: 'EUR',
+    currencySymbol: '€',
+    exchangeRateFromUSD: 0.93,
+    flag: '🇫🇷',
+    localPaymentMethods: ['Carte Bancaire (CB)', 'Apple Pay', 'PayPal', 'Cards', 'Cash on Delivery (COD)'],
+    hasCashOnDelivery: true,
+    deliveryTimeDays: '2-4 business days',
+  },
+  {
+    code: 'CA',
+    name: 'Canada',
+    currency: 'CAD',
+    currencySymbol: 'CA$',
+    exchangeRateFromUSD: 1.38,
+    flag: '🇨🇦',
+    localPaymentMethods: ['Interac e-Transfer', 'Apple Pay', 'Google Pay', 'Credit/Debit Card', 'Cash on Delivery (COD)'],
+    hasCashOnDelivery: true,
+    deliveryTimeDays: '2-4 business days',
+  },
+  {
+    code: 'AU',
+    name: 'Australia',
+    currency: 'AUD',
+    currencySymbol: 'A$',
+    exchangeRateFromUSD: 1.54,
+    flag: '🇦🇺',
+    localPaymentMethods: ['POLi Payments', 'Afterpay', 'Apple Pay', 'Cards', 'Cash on Delivery (COD)'],
+    hasCashOnDelivery: true,
+    deliveryTimeDays: '3-5 business days',
+  },
+  {
+    code: 'JP',
+    name: 'Japan',
+    currency: 'JPY',
+    currencySymbol: '¥',
+    exchangeRateFromUSD: 155.0,
+    flag: '🇯🇵',
+    localPaymentMethods: ['Konbini Convenience Store Pay', 'Line Pay', 'PayPay JP', 'Cards', 'Cash on Delivery (COD)'],
+    hasCashOnDelivery: true,
+    deliveryTimeDays: '2-3 business days',
+  },
+  {
+    code: 'BR',
+    name: 'Brazil',
+    currency: 'BRL',
+    currencySymbol: 'R$',
+    exchangeRateFromUSD: 5.65,
+    flag: '🇧🇷',
+    localPaymentMethods: ['PIX Instant', 'Boleto Bancário', 'Cartão de Crédito', 'Mercado Pago', 'Cash on Delivery (COD)'],
+    hasCashOnDelivery: true,
+    deliveryTimeDays: '3-6 business days',
+  },
+  {
+    code: 'AE',
+    name: 'United Arab Emirates',
+    currency: 'AED',
+    currencySymbol: 'AED ',
+    exchangeRateFromUSD: 3.67,
+    flag: '🇦🇪',
+    localPaymentMethods: ['Apple Pay', 'Tabby Pay in 4', 'Cards', 'Cash on Delivery (COD)'],
+    hasCashOnDelivery: true,
+    deliveryTimeDays: '1-2 business days',
+  },
+  {
+    code: 'SA',
+    name: 'Saudi Arabia',
+    currency: 'SAR',
+    currencySymbol: 'SAR ',
+    exchangeRateFromUSD: 3.75,
+    flag: '🇸🇦',
+    localPaymentMethods: ['Mada Debit Card', 'STC Pay', 'Apple Pay', 'Tamara', 'Cash on Delivery (COD)'],
+    hasCashOnDelivery: true,
+    deliveryTimeDays: '2-4 business days',
+  },
+  {
+    code: 'SG',
+    name: 'Singapore',
+    currency: 'SGD',
+    currencySymbol: 'S$',
+    exchangeRateFromUSD: 1.35,
+    flag: '🇸🇬',
+    localPaymentMethods: ['PayNow', 'GrabPay', 'Cards', 'Cash on Delivery (COD)'],
+    hasCashOnDelivery: true,
+    deliveryTimeDays: '1-3 business days',
+  },
+  {
+    code: 'NL',
+    name: 'Netherlands',
+    currency: 'EUR',
+    currencySymbol: '€',
+    exchangeRateFromUSD: 0.93,
+    flag: '🇳🇱',
+    localPaymentMethods: ['iDEAL', 'Klarna', 'Credit/Debit Card', 'Cash on Delivery (COD)'],
+    hasCashOnDelivery: true,
+    deliveryTimeDays: '2-3 business days',
+  },
+  {
+    code: 'ES',
+    name: 'Spain',
+    currency: 'EUR',
+    currencySymbol: '€',
+    exchangeRateFromUSD: 0.93,
+    flag: '🇪🇸',
+    localPaymentMethods: ['Bizum', 'Cards', 'PayPal', 'Cash on Delivery (COD)'],
+    hasCashOnDelivery: true,
+    deliveryTimeDays: '2-4 business days',
+  },
+  {
+    code: 'IT',
+    name: 'Italy',
+    currency: 'EUR',
+    currencySymbol: '€',
+    exchangeRateFromUSD: 0.93,
+    flag: '🇮🇹',
+    localPaymentMethods: ['Satispay', 'Postepay', 'Cards', 'Cash on Delivery (COD)'],
+    hasCashOnDelivery: true,
+    deliveryTimeDays: '2-4 business days',
+  },
+  {
+    code: 'NG',
+    name: 'Nigeria',
+    currency: 'NGN',
+    currencySymbol: '₦',
+    exchangeRateFromUSD: 1540.0,
+    flag: '🇳🇬',
+    localPaymentMethods: ['Paystack / Flutterwave Bank Transfer', 'Cards', 'USSD', 'Cash on Delivery (COD)'],
+    hasCashOnDelivery: true,
+    deliveryTimeDays: '3-6 business days',
+  },
+  {
+    code: 'ZA',
+    name: 'South Africa',
+    currency: 'ZAR',
+    currencySymbol: 'R',
+    exchangeRateFromUSD: 18.2,
+    flag: '🇿🇦',
+    localPaymentMethods: ['Ozow Instant EFT', 'SnapScan', 'Cards', 'Cash on Delivery (COD)'],
+    hasCashOnDelivery: true,
+    deliveryTimeDays: '3-5 business days',
+  },
+  {
+    code: 'MX',
+    name: 'Mexico',
+    currency: 'MXN',
+    currencySymbol: 'Mex$',
+    exchangeRateFromUSD: 20.2,
+    flag: '🇲🇽',
+    localPaymentMethods: ['OXXO Pay', 'SPEI Transfer', 'Cards', 'Mercado Pago', 'Cash on Delivery (COD)'],
+    hasCashOnDelivery: true,
+    deliveryTimeDays: '3-5 business days',
+  },
+  {
+    code: 'KR',
+    name: 'South Korea',
+    currency: 'KRW',
+    currencySymbol: '₩',
+    exchangeRateFromUSD: 1390.0,
+    flag: '🇰🇷',
+    localPaymentMethods: ['KakaoPay', 'Naver Pay', 'Toss Pay', 'Cards', 'Cash on Delivery (COD)'],
+    hasCashOnDelivery: true,
+    deliveryTimeDays: '2-3 business days',
+  },
+  {
+    code: 'CH',
+    name: 'Switzerland',
+    currency: 'CHF',
+    currencySymbol: 'CHF ',
+    exchangeRateFromUSD: 0.89,
+    flag: '🇨🇭',
+    localPaymentMethods: ['TWINT', 'Cards', 'PostFinance', 'Cash on Delivery (COD)'],
+    hasCashOnDelivery: true,
+    deliveryTimeDays: '2-3 business days',
+  },
+  {
+    code: 'GLOBAL',
+    name: 'Rest of World (Global Express)',
+    currency: 'USD',
+    currencySymbol: '$',
+    exchangeRateFromUSD: 1.0,
+    flag: '🌐',
+    localPaymentMethods: ['International Credit/Debit Card', 'PayPal Global', 'Apple Pay', 'Google Pay', 'Cash on Delivery (COD)'],
+    hasCashOnDelivery: true,
+    deliveryTimeDays: '4-7 business days',
+  },
+];
+
+export function getCountryByCode(code: string): CountryInfo {
+  return COUNTRIES.find((c) => c.code === code) || COUNTRIES[0];
+}
+
+export function formatPriceForCountry(priceUSD: number, country: CountryInfo): string {
+  const converted = priceUSD * country.exchangeRateFromUSD;
+  // Format with commas and nice digits
+  if (country.currency === 'JPY' || country.currency === 'KRW') {
+    return `${country.currencySymbol}${Math.round(converted).toLocaleString()}`;
+  }
+  if (country.currency === 'INR' || country.currency === 'NGN') {
+    return `${country.currencySymbol}${Math.round(converted).toLocaleString()}`;
+  }
+  return `${country.currencySymbol}${converted.toFixed(2)}`;
+}

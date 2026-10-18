@@ -1,0 +1,11 @@
+{
+  "name": "VYLO",
+  "description": "Personal Intelligent Fitness Operating System powered by ZYRO AI, featuring real-time Next Action telemetry, Your Day interactive missions, Gemini multimodal food scanner, immersive workout players, and connected nutrition intelligence.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
